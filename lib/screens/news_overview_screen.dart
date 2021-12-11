@@ -16,8 +16,8 @@ class NewsOverviewScreen extends StatefulWidget {
 class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
   var _isInit = true;
   var _isloading = false;
-  String _searchText = "";
-  Icon _searchIcon = Icon(Icons.search);
+  String _searchText = "popular";
+  Icon _searchIcon = const Icon(Icons.search);
   late Widget _appBarTitle;
   @override
   void didChangeDependencies() {
@@ -53,14 +53,14 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
             Provider.of<News>(context, listen: false).fetchAndSetNews("popular").then((value) {
               setState(() {
                 _isloading = false;
-                _searchText = "";
+                _searchText = "popular";
               });
             });
           } else {
             Provider.of<News>(context, listen: false).fetchAndSetNews(value.toLowerCase()).then((_) {
               setState(() {
                 _isloading = false;
-                _searchText = value.toUpperCase();
+                _searchText = value.toLowerCase();
               });
             });
           }
@@ -71,7 +71,6 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
     } else {
       _searchIcon = const Icon(Icons.search);
       _appBarTitle = const Text("News");
-      _searchText = "";
     }
     setState(() {});
   }
@@ -98,7 +97,7 @@ class _NewsOverviewScreenState extends State<NewsOverviewScreen> {
                   setState(() {
                     _isloading = true;
                   });
-                  Provider.of<News>(context, listen: false).fetchAndSetNews(_searchText.toLowerCase()).then((value) {
+                  Provider.of<News>(context, listen: false).fetchAndSetNews(_searchText).then((value) {
                     setState(() {
                       _isloading = false;
                       _searchText = "";
